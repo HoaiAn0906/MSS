@@ -1,0 +1,90 @@
+services:
+  nginx:
+    image:  nginx:1.27.2
+    restart: unless-stopped
+    volumes:
+      - ./nginx/templates:/etc/nginx/templates
+      - ./nginx/configuration/custom_proxy_settings.conf:/etc/nginx/conf.d/custom_proxy_settings.conf
+    ports:
+      - "80:80"
+    networks:
+      - mss-network
+  backoffice:
+    build: ./backoffice-bff
+    entrypoint: [ "./wait-for-it.sh", "identity:80", "--timeout=300", "--", "java", "-jar", "/app.jar" ]
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SERVER_PORT
+      - LOGGING_CONFIG
+      - JAVA_TOOL_OPTIONS
+    volumes:
+      - ./deployment/app-config:/app-config
+    networks:
+      - mss-network
+  backoffice-nextjs:
+    build: ./backoffice
+    networks:
+      - mss-network
+  identity:
+    image: quay.io/keycloak/keycloak:26.0.2
+    command: 'start-dev --import-realm'
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: admin
+      KC_HTTP_PORT: 80
+    volumes:
+      - ./identity/keycloak.json:/opt/keycloak/data/import/keycloak.json
+      - ./identity/themes/yas/theme:/opt/keycloak/themes
+    networks:
+      - mss-network
+  swagger-ui:
+    image: swaggerapi/swagger-ui:v5.17.14
+    environment:
+      - BASE_URL=/swagger-ui
+      - URLS
+      - OAUTH_CLIENT_ID=swagger-ui
+      - OAUTH_USE_PKCE=true
+    networks:
+      - mss-network
+  postgres:
+    image: debezium/postgres:16-alpine
+    build: ./docker/postgres
+    hostname: ${POSTGRES_HOST}
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT_DOCKER}"
+    volumes:
+      - ./docker/postgres/postgresql.conf.sample:/usr/share/postgresql/postgresql.conf.sample
+      - ./postgres_init.sql:/docker-entrypoint-initdb.d/postgres_init.sql
+      - postgres:/var/lib/postgresql/data
+    command: postgres -c 'max_connections=500'
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    networks:
+      - mss-network
+  redis:
+    image: redis:7.4.1-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    environment:
+      - SPRING_DATA_REDIS_HOST
+      - SPRING_DATA_REDIS_PORT
+    volumes:
+      - redis:/data
+    networks:
+      - mss-network
+
+networks:
+  mss-network:
+    driver: bridge
+    name: mss-network
+
+volumes:
+  postgres:
+  pgadmin:
+  redis:
