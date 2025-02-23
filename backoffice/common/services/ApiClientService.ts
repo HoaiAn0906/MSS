@@ -27,6 +27,8 @@ const sendRequest = async (
     requestOptions.body = data;
   }
 
+  console.log('endpoint:', endpoint);
+
   try {
     const response = await fetch(endpoint, method === 'GET' ? undefined : requestOptions);
 

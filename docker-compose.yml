@@ -9,22 +9,24 @@ services:
       - "80:80"
     networks:
       - mss-network
-  backoffice:
-    build: ./backoffice-bff
-    entrypoint: [ "./wait-for-it.sh", "identity:80", "--timeout=300", "--", "java", "-jar", "/app.jar" ]
-    environment:
-      - SPRING_PROFILES_ACTIVE=prod
-      - SERVER_PORT
-      - LOGGING_CONFIG
-      - JAVA_TOOL_OPTIONS
-    volumes:
-      - ./deployment/app-config:/app-config
-    networks:
-      - mss-network
-  backoffice-nextjs:
-    build: ./backoffice
-    networks:
-      - mss-network
+#  backoffice:
+#    build: ./backoffice-bff
+#    entrypoint: [ "./wait-for-it.sh", "identity:80", "--timeout=300", "--", "java", "-jar", "/app.jar" ]
+#    ports:
+#      - "8087:8087"
+#    environment:
+#      - SPRING_PROFILES_ACTIVE=dev
+#      - SERVER_PORT
+#      - LOGGING_CONFIG
+#      - JAVA_TOOL_OPTIONS
+#    volumes:
+#      - ./deployment/app-config:/app-config
+#    networks:
+#      - mss-network
+#  backoffice-nextjs:
+#    build: ./backoffice-nextjs
+#    networks:
+#      - mss-network
   identity:
     image: quay.io/keycloak/keycloak:26.0.2
     command: 'start-dev --import-realm'
@@ -78,6 +80,30 @@ services:
       - redis:/data
     networks:
       - mss-network
+#  product:
+#    build: ./product
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/product
+#      - SERVER_SERVLET_CONTEXT_PATH=/product
+#      - SERVER_PORT
+#      - LOGGING_CONFIG
+#    volumes:
+#      - ./deployment/app-config:/app-config
+#    networks:
+#      - mss-network
+#  media:
+#    build: ./media
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/media
+#      - SERVER_SERVLET_CONTEXT_PATH=/media
+#      - MSS_PUBLIC_URL=${MSS_PUBLIC_API_URL}/media
+#      - SERVER_PORT
+#      - LOGGING_CONFIG
+#    volumes:
+#      - ./deployment/app-config:/app-config
+#      - ./sampledata/images:/images
+#    networks:
+#      - mss-network
 
 networks:
   mss-network:

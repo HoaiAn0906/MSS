@@ -10,6 +10,7 @@
 	</parent>
     <artifactId>product</artifactId>
     <version>${revision}</version>
+    
     <name>product</name>
     <description>MSS Product service</description>
 

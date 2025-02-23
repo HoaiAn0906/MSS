@@ -1,0 +1,24 @@
+server:
+  servlet:
+    context-path: /common-library
+
+spring:
+  application:
+    name: common-library
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://identity/realms/MSS
+
+springdoc:
+  oauthflow:
+    authorization-url: http://identity/realms/MSS/protocol/openid-connect/auth
+    token-url: http://identity/realms/MSS/protocol/openid-connect/token
+
+cors:
+  allowed-origins: "*"
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

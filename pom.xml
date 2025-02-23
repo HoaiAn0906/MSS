@@ -18,6 +18,9 @@
         <module>common-library</module>
         <module>product</module>
         <module>backoffice-bff</module>
+        <module>storefront-bff</module>
+        <module>media</module>
+        <module>tax</module>
     </modules>
 
     <properties>
@@ -272,10 +275,10 @@
                     </executions>
                     <configuration>
                         <excludes>
-                            <exclude>com/mss/**/*Application.class</exclude>
-                            <exclude>com/mss/**/config/**</exclude>
-                            <exclude>com/mss/**/exception/**</exclude>
-                            <exclude>com/mss/**/constants/**</exclude>
+                            <exclude>org/mss/**/*Application.class</exclude>
+                            <exclude>org/mss/**/config/**</exclude>
+                            <exclude>org/mss/**/exception/**</exclude>
+                            <exclude>org/mss/**/constants/**</exclude>
                         </excludes>
                     </configuration>
                 </plugin>

@@ -490,8 +490,8 @@ const ProductVariations = ({ getValue, setValue }: Props) => {
             {(selectedOptions || []).map((option) => (
               <div className="mb-3 d-flex gap-4" key={option.name}>
                 <label
-                  className="form-label flex-grow-1 d-flex flex-col align-items-center"
-                  htmlFor={option.name}
+                    className="form-label flex-grow-1 d-flex flex-col align-items-center"
+                    htmlFor={option.name}
                 >
                   {option.name}
                 </label>

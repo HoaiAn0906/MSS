@@ -1,0 +1,51 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/media
+    username: admin
+    password: admin
+  application:
+    name: media
+  threads:
+    virtual:
+      enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://identity/realms/MSS
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    enabled: true
+
+springdoc:
+  packagesToScan: org.mss.media
+  swagger-ui:
+    path: /swagger-ui
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      client-id: swagger-ui
+  oauthflow:
+    authorization-url: http://identity/realms/MSS/protocol/openid-connect/auth
+    token-url: http://identity/realms/MSS/protocol/openid-connect/token
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+mss:
+  publicUrl: http://localhost:8083
+
+file:
+  directory: /images/
+
+cors:
+  allowed-origins: "*"
