@@ -1,5 +1,5 @@
 server:
-  port: 8087
+  port: 8089
 spring:
   application:
     name: storefront-bff
@@ -18,11 +18,11 @@ spring:
           keycloak:
             provider: keycloak
             client-id: storefront-bff
-            client-secret: ZrU9I0q2uXBglBnmvyJdkl1lf0ncr8tn #gitleaks:allow
+            client-secret: mc3FoUphSstzgosxSWnmoUtF0xtF37r9 #gitleaks:allow
             scope: openid, profile, email, roles
   data:
     redis:
-      host: redis
+      host: localhost
       port: 6379
   session:
     store-type: redis
@@ -63,6 +63,41 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>.*), /$\{segment}
             - TokenRelay=
+        - id: api_cart_local
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/cart/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+            - TokenRelay=
+        - id: api_location_local
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/location/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+            - TokenRelay=
+        - id: api_customer_local
+          uri: http://localhost:8088
+          predicates:
+            - Path=/api/customer/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+            - TokenRelay=
+        - id: api_order_local
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+            - TokenRelay=
+        - id: api_promotion_local
+          uri: http://localhost:8092
+          predicates:
+            - Path=/api/promotion/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment}
+            - TokenRelay=
         - id: api
           uri: http://api.yas.local
           predicates:
@@ -97,8 +132,8 @@ spring:
           predicates:
             - Path=/**
 ---
-yas:
+mss:
   services:
-    customer: http://api.yas.local/customer
-    cart: http://api.yas.local/cart
+    customer: http://api.mss.local/customer
+    cart: http://api.mss.local/cart
     token-identity: http://identity/realms/MSS/protocol/openid-connect/token

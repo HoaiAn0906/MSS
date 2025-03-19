@@ -29,6 +29,7 @@ spring:
     enabled: true
 
 springdoc:
+  packagesToScan: org.mss.tax
   swagger-ui:
     path: /swagger-ui
     oauth:
@@ -48,9 +49,23 @@ logging:
           descriptor:
             sql: trace
 
+resilience4j:
+  retry:
+    instances:
+      rest-api:
+        max-attempts: 3
+  circuitbreaker:
+    instances:
+      rest-circuit-breaker:
+        sliding-window-type: COUNT_BASED
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 3
+
 mss:
   services:
-    location: http://api.mss.local/location
+    location: http://localhost:8086/
 
 cors:
   allowed-origins: "*"

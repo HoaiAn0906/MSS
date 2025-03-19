@@ -16,11 +16,18 @@
 
     <modules>
         <module>common-library</module>
+        <module>payment-paypal</module>
         <module>product</module>
         <module>backoffice-bff</module>
         <module>storefront-bff</module>
         <module>media</module>
         <module>tax</module>
+        <module>cart</module>
+        <module>location</module>
+        <module>customer</module>
+        <module>order</module>
+        <module>promotion</module>
+        <module>payment</module>
     </modules>
 
     <properties>

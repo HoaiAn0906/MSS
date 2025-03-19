@@ -32,6 +32,7 @@ spring:
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
 springdoc:
+  packagesToScan: org.mss.product
   swagger-ui:
     path: /swagger-ui
     oauth:
@@ -50,6 +51,20 @@ logging:
         type:
           descriptor:
               sql: trace
+
+resilience4j:
+  retry:
+    instances:
+      rest-api:
+        max-attempts: 3
+  circuitbreaker:
+    instances:
+      rest-circuit-breaker:
+        sliding-window-type: COUNT_BASED
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 3
 
 cors:
   allowed-origins: "*"

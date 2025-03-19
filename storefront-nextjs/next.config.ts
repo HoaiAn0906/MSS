@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: "standalone",
   images: {
-    domains: ["localhost"],
+    domains: ["localhost", "via.placeholder.com"],
   },
 };
 

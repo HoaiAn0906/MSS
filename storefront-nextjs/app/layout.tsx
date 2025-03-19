@@ -3,10 +3,13 @@ import { inter } from "@/components/common/fonts";
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from "@/lib/constants";
 import { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
-import SideNav from "@/components/common/layout/SideNav";
 import { QueryProvider } from "@/components/common/QueryProvider";
 import { ToastContainer } from "react-toastify";
-
+import Header from "@/components/common/layout/Header";
+import AuthencationInfo from "@/components/common/AuthencationInfo";
+import ModeToggle from "@/components/common/layout/ModeToggle";
+import Footer from "@/components/common/layout/Footer";
+import { AppProvider } from "@/context/AppContext";
 export const metadata: Metadata = {
   title: {
     template: `%s | ${APP_NAME}`,
@@ -26,18 +29,21 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
           <QueryProvider>
-            <div className="flex flex-col h-screen md:flex-row md:overflow-hidden">
-              <div className="w-full flex-none md:w-52 bg-secondary">
-                <SideNav />
-              </div>
+            <AppProvider>
+              <Header>
+                <AuthencationInfo />
+              </Header>
 
-              <div className="grow p-3 md:overflow-y-auto ">{children}</div>
-            </div>
+              <div className="body mt-[134px]">{children}</div>
+
+              <Footer />
+            </AppProvider>
+
             <ToastContainer
               position="top-center"
               autoClose={3000}

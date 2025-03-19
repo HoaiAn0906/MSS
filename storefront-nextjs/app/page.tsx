@@ -1,30 +1,19 @@
-import { lusitana } from '@/components/common/fonts'
-import {
-    CardsSkeleton,
-} from '@/components/common/Skeletons'
-import { Suspense } from 'react'
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
+import Banner from "@/modules/home/components/Banner";
+import Categories from "@/modules/home/components/Categories";
+import FeaturedProducts from "@/modules/home/components/FeaturedProducts";
 
 export default async function Page() {
-    return (
-        <main>
-            <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
-                Dashboard
-            </h1>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                <Suspense fallback={<CardsSkeleton />}>
-                    <Card>
-                        <CardHeader>
-                            <h2>Revenue</h2>
-                        </CardHeader>
-                        <CardContent>
-                            <p>€0.00</p>
-                        </CardContent>
-                    </Card>
-                </Suspense>
-            </div>
-            <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-            </div>
-        </main>
-    )
+  return (
+    <main>
+      <div className="bg-[#f5f5f5]">
+        <div className="container mx-auto pb-10 block">
+          <Banner />
+
+          <Categories />
+
+          <FeaturedProducts />
+        </div>
+      </div>
+    </main>
+  );
 }

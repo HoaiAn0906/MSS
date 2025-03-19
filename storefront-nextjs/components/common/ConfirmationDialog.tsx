@@ -18,6 +18,20 @@ type DialogProps = {
   cancelText?: string;
   ok: (data?: unknown) => void;
   cancel: () => void;
+  variantOk?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
+  variantCancel?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
 };
 
 export default function ConfirmationDialog(props: DialogProps) {
@@ -31,6 +45,8 @@ export default function ConfirmationDialog(props: DialogProps) {
     isShowCancel = true,
     ok,
     cancel,
+    variantOk,
+    variantCancel,
   } = props;
 
   const handleOk = (): void => {
@@ -50,12 +66,12 @@ export default function ConfirmationDialog(props: DialogProps) {
         <DialogDescription>{children}</DialogDescription>
         <DialogFooter>
           {isShowCancel && (
-            <Button variant="secondary" onClick={handleCancel}>
+            <Button variant={variantCancel} onClick={handleCancel}>
               {cancelText}
             </Button>
           )}
           {isShowOk && (
-            <Button variant="default" onClick={handleOk}>
+            <Button variant={variantOk} onClick={handleOk}>
               {okText}
             </Button>
           )}

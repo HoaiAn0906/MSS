@@ -1,0 +1,22 @@
+package org.mss.location.controller;
+
+import org.mss.location.service.DistrictService;
+import org.mss.location.viewmodel.district.DistrictGetVm;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequiredArgsConstructor
+public class DistrictStorefrontController {
+    private final DistrictService districtService;
+
+    @GetMapping({"/storefront/district/{id}", "/backoffice/district/{id}"})
+    public ResponseEntity<List<DistrictGetVm>> getList(@PathVariable Long id) {
+        return ResponseEntity.ok(districtService.getList(id));
+    }
+}

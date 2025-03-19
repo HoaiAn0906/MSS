@@ -1,0 +1,74 @@
+server:
+  port: 8092
+  servlet:
+    context-path: /promotion
+
+spring:
+  application:
+    name: promotion
+  threads:
+    virtual:
+      enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://identity/realms/MSS
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/promotion
+    username: admin
+    password: admin
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        show_sql: true
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+
+springdoc:
+  packagesToScan: org.mss.promotion
+  swagger-ui:
+    path: /swagger-ui
+    oauth:
+      use-pkce-with-authorization-code-grant: true
+      client-id: swagger-ui
+  oauthflow:
+    authorization-url: http://identity/realms/MSS/protocol/openid-connect/auth
+    token-url: http://identity/realms/MSS/protocol/openid-connect/token
+
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+resilience4j:
+  retry:
+    instances:
+      rest-api:
+        max-attempts: 3
+  circuitbreaker:
+    instances:
+      rest-circuit-breaker:
+        sliding-window-type: COUNT_BASED
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 3
+
+cors:
+  allowed-origins: "*"
+
+mss:
+  services:
+    product: http://localhost:8080/product

@@ -1,0 +1,10 @@
+.carousel-item img {
+  width: 100%; /* Đặt chiều rộng cố định */
+  height: 300px; /* Đặt chiều cao cố định */
+  object-fit: cover; /* Đảm bảo ảnh được cắt để vừa với khung */
+}
+
+.carousel-container {
+  position: relative; /* Đảm bảo carousel có vị trí tương đối */
+  z-index: 1; /* Đặt z-index thấp hơn nếu cần */
+}
