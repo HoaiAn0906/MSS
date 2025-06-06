@@ -1,23 +1,18 @@
 "use client";
 
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuShortcut,
-  DropdownMenuGroup,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuPortal,
-  DropdownMenuSubContent,
 } from "@/components/ui/dropdown-menu";
 import { User } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 type AuthenticatedUser = {
   username: string;
 };
@@ -28,6 +23,8 @@ type AuthenticationInfoVm = {
 };
 
 const AuthencationInfo = () => {
+  const router = useRouter();
+
   const [authenticatedInfoVm, setAuthenticatedInfoVm] =
     useState<AuthenticationInfoVm | null>(null);
 
@@ -58,19 +55,23 @@ const AuthencationInfo = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <Link href="/profile" className=" block h-full">
                   Profile
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem disabled>
                 <Link href="/my-orders" className="d-block h-full">
                   My orders
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                router.push("/logout");
+              }}
+            >
               <Link href="/logout" className="d-block h-full">
                 Logout
               </Link>

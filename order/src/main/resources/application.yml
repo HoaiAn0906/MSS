@@ -75,4 +75,4 @@ mss:
     customer: http://localhost:8088/customer
     product: http://localhost:8080/product
     tax: http://localhost:8091/tax
-    promotion: http://localhost:808/promotion
+    promotion: http://localhost:8092/promotion

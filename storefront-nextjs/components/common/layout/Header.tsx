@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Bell, CircleHelp, Search, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useCartContext } from "@/context/CartContext";
+import { toast } from "react-toastify";
 
 type Props = {
   children: React.ReactNode;
@@ -102,7 +103,13 @@ const Header = ({ children }: Props) => {
               </form> */}
               <div className="flex w-full items-center space-x-2">
                 <Input placeholder="Search" className="w-full h-11" />
-                <Button type="submit" className="h-11">
+                <Button
+                  type="submit"
+                  className="h-11"
+                  onClick={() => {
+                    toast.success("Feature under development");
+                  }}
+                >
                   Search
                 </Button>
               </div>

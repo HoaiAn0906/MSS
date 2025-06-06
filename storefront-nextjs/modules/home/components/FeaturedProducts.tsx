@@ -35,7 +35,7 @@ const FeaturedProducts = () => {
       </div>
 
       <div className="grid grid-cols-12 gap-4 mt-4">
-        {products?.productList.map((product) => (
+        {products?.productList?.map((product) => (
           <div key={product.id} className="col-span-2">
             <ProductCard
               image={product.thumbnailUrl}

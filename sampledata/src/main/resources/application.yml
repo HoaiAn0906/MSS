@@ -17,7 +17,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     product:
-      url: jdbc:postgresql://localhost:5432/product
+      url: jdbc:postgresql://localhost:5433/product
     media:
       url: jdbc:postgresql://localhost:5433/media
     username: admin

@@ -49,6 +49,7 @@ public class CheckoutService {
         Checkout checkout = checkoutMapper.toModel(checkoutPostVm);
         checkout.setCheckoutState(CheckoutState.PENDING);
         checkout.setCustomerId(AuthenticationUtils.extractUserId());
+        checkout.setCreatedBy(AuthenticationUtils.extractUserId());
 
         prepareCheckoutItems(checkout, checkoutPostVm);
         checkout = checkoutRepository.save(checkout);
@@ -108,6 +109,8 @@ public class CheckoutService {
     public CheckoutVm getCheckoutPendingStateWithItemsById(String id) {
         Checkout checkout = checkoutRepository.findByIdAndCheckoutState(id, CheckoutState.PENDING).orElseThrow(()
                 -> new NotFoundException(CHECKOUT_NOT_FOUND, id));
+
+        System.out.println("Checkout: " + checkout);
 
         if (isNotOwnedByCurrentUser(checkout)) {
             throw new ForbiddenException(ApiConstant.FORBIDDEN, "You can not view this checkout");

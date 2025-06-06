@@ -8,9 +8,9 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import Link from "next/link";
 import { useRef } from "react";
 import "@/styles/Carousel.css";
+import { toast } from "react-toastify";
 
 const bannerImages = [
   "/images/main-banner-1.jpg",
@@ -43,13 +43,12 @@ const Banner = () => {
         </Carousel>
       </div>
       <div className="ml-4">
-        <Link href="/products">
-          <img
-            src="/images/sub-banner.jpg"
-            alt={`sub-banner`}
-            className="h-[300px]"
-          />
-        </Link>
+        <img
+          src="/images/sub-banner.jpg"
+          alt={`sub-banner`}
+          className="h-[300px] cursor-pointer"
+          onClick={() => toast.info("Feature under development")}
+        />
       </div>
     </div>
   );

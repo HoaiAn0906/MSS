@@ -4,7 +4,6 @@ import { ProductThumbnail } from "../models/ProductThumbnail";
 import { MssError } from "@/components/service/MssError";
 
 const baseUrl = "/api/product/storefront";
-const serverSideRenderUrl = `${process.env.API_BASE_PATH}/product/storefront`;
 
 export async function getFeaturedProducts(
   pageNo: number,

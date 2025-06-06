@@ -21,6 +21,12 @@ public class PaymentProviderController {
         this.paymentProviderService = paymentProviderService;
     }
 
+    //check heath
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("Payment Provider Service is running");
+    }
+
     @PostMapping("/backoffice/payment-providers")
     public ResponseEntity<PaymentProviderVm> create(@Valid @RequestBody CreatePaymentVm createPaymentVm) {
         return ResponseEntity

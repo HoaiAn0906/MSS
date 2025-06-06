@@ -1,18 +1,18 @@
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useState, useEffect } from "react";
 import { PaymentProvider } from "@/modules/payment/models/PaymentProvider";
 import { getEnabledPaymentProviders } from "@/modules/payment/services/PaymentProviderService";
+import { useEffect, useState } from "react";
 
 type Props = {
   setPaymentMethod: (paymentMethod: string) => void;
+  onProcessPayment: () => Promise<void>;
 };
 
-const PaymentMethod = ({ setPaymentMethod }: Props) => {
+const PaymentMethod = ({ setPaymentMethod, onProcessPayment }: Props) => {
   const [paymentProviders, setPaymentProviders] = useState<PaymentProvider[]>(
     []
   );
@@ -41,13 +41,15 @@ const PaymentMethod = ({ setPaymentMethod }: Props) => {
 
   const paymentProviderChange = (id: string) => {
     setSelectedPayment(selectedPayment === id ? null : id);
-    setPaymentMethod(selectedPayment === id ? null : id);
+    setPaymentMethod(selectedPayment === id ? "" : id);
   };
 
-  const handleAgreeTerms = (e: any) => {
-    if (e.target.checked) {
+  const handleAgreeTerms = (checked: boolean) => {
+    if (checked) {
+      console.log("Agree terms");
       setDisableCheckout(false);
     } else {
+      console.log("Disagree terms");
       setDisableCheckout(true);
     }
   };
@@ -62,37 +64,21 @@ const PaymentMethod = ({ setPaymentMethod }: Props) => {
           onValueChange={paymentProviderChange}
           className="space-y-4"
         >
-          <div className="flex items-center space-x-2 border p-4 rounded-md">
-            <RadioGroupItem value="paypal" id="paypal" />
-            <Label htmlFor="paypal" className="flex items-center">
-              <Image
-                src="/paypal.png"
-                alt="PayPal"
-                width={20}
-                height={20}
-                className="mr-2"
-              />
-              Paypal
-            </Label>
-          </div>
-
-          <div className="flex items-center space-x-2 border p-4 rounded-md">
-            <RadioGroupItem value="cash" id="cash" />
-            <Label htmlFor="cash" className="flex items-center">
-              <Image
-                src="/cash.png"
-                alt="Cash"
-                width={20}
-                height={20}
-                className="mr-2"
-              />
-              Cash On Delivery
-            </Label>
-          </div>
+          {paymentProviders.map((provider) => (
+            <div
+              key={provider.id}
+              className="flex items-center space-x-2 border p-4 rounded-md"
+            >
+              <RadioGroupItem value={provider.id} id={provider.id} />
+              <Label htmlFor={provider.id} className="flex items-center">
+                {provider.name}
+              </Label>
+            </div>
+          ))}
         </RadioGroup>
 
         <div className="mt-4 flex items-center space-x-2">
-          <Checkbox id="terms" onChange={handleAgreeTerms} />
+          <Checkbox id="terms" onCheckedChange={handleAgreeTerms} />
           <Label htmlFor="terms" className="text-sm">
             Agree to Terms and Conditions
           </Label>
@@ -109,6 +95,7 @@ const PaymentMethod = ({ setPaymentMethod }: Props) => {
         <Button
           className="w-full mt-6 bg-gray-500 hover:bg-gray-600"
           disabled={disableCheckout}
+          onClick={onProcessPayment}
         >
           PROCESS TO PAYMENT
         </Button>

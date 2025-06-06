@@ -1,14 +1,12 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Category } from "@/modules/catalog/models/Category";
 import { getCategories } from "@/modules/catalog/services/CategoryService";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 const Categories = () => {
-  const router = useRouter();
-
   const [categories, setCategories] = useState<Category[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -30,13 +28,17 @@ const Categories = () => {
   }
 
   useEffect(() => {
-    getCategories().then((data) => {
-      setCategories([...data]);
-    });
+    getCategories()
+      .then((data) => {
+        setCategories([...data]);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch categories");
+      });
   }, []);
 
-  const handleClick = (slug: string) => {
-    console.log(slug);
+  const handleClick = () => {
+    toast.info("Feature under development");
   };
 
   const goToPage = (pageNumber: number) => {
@@ -57,35 +59,28 @@ const Categories = () => {
             <ArrowLeft />
           </div>
         )}
-        <ul className="flex border border-black/5 p-0">
-          {chunkedItems.map((chunk, index) => (
+        <ul className="flex flex-row overflow-x-auto gap-x-4 border border-black/5 p-0">
+          {categories.map((item) => (
             <li
-              key={index}
-              className="w-1/10 flex flex-col transition border-l border-black/5 first:border-l-0 last:border-r border-black/5"
+              key={item.id}
+              className="flex-shrink-0 w-36 flex flex-col transition border-l border-black/5 first:border-l-0 last:border-r border-black/5"
             >
-              {chunk.map((item) => (
-                <div
-                  className="h-36 w-36 cursor-pointer flex flex-col items-center transition hover:shadow-md"
-                  key={item.id}
-                  onClick={() => handleClick(item.slug)}
-                >
-                  <div className="flex-shrink-0 mt-[10%] w-[70%] h-[60%]">
-                    {item.categoryImage ? (
-                      <div
-                        className="h-full bg-contain bg-no-repeat bg-center" 
-                        style={{
-                          backgroundImage: `url(${item.categoryImage.url})`,
-                        }}
-                      ></div>
-                    ) : (
-                      <div className="h-full bg-gray-200 flex items-center justify-center">
-                        No image
-                      </div>
-                    )}
-                  </div>
+              <div
+                className="text-center h-36 w-36 cursor-pointer flex flex-col items-center transition hover:shadow-md"
+                onClick={() => handleClick()}
+              >
+                <div className="flex-shrink-0 mt-[10%] w-[70%] h-[60%]">
+                  {item.categoryImage ? (
+                    <div
+                      className="h-full bg-contain bg-no-repeat bg-center"
+                      style={{
+                        backgroundImage: `url(${item.categoryImage.url})`,
+                      }}
+                    ></div>
+                  ) : null}
                   <p className="text-sm mt-2">{item.name}</p>
                 </div>
-              ))}
+              </div>
             </li>
           ))}
         </ul>

@@ -23,14 +23,14 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
     @Retry(name = "restApi")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleProductThumbnailFallback")
     public List<ProductThumbnailVm> getProducts(List<Long> ids) {
-        final URI url = UriComponentsBuilder
+        final URI uri = UriComponentsBuilder
                 .fromHttpUrl(serviceUrlConfig.product())
                 .path("/product/storefront/products/list-featured")
                 .queryParam("productId", ids)
                 .build()
                 .toUri();
         return restClient.get()
-                .uri(url)
+                .uri(uri)
                 .retrieve()
                 .toEntity(new ParameterizedTypeReference<List<ProductThumbnailVm>>() {
                 })
