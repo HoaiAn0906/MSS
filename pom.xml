@@ -28,6 +28,7 @@
         <module>order</module>
         <module>promotion</module>
         <module>payment</module>
+        <module>sampledata</module>
     </modules>
 
     <properties>
