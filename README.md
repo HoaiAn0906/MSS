@@ -5,7 +5,7 @@ MSS is a pet project aim to practice building a typical microservice application
 ## Tentative technologies and frameworks
 
 - Java 21
-- Spring boot 3.2
+- Spring boot 3.3
 - Next.js
 - Keycloak
 - Kafka
